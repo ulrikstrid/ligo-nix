@@ -1,9 +1,14 @@
 { lib, stdenv, fetchFromGitHub, ligo, cacert }:
 
-{ pname, version, src
-, nativeBuildInputs ? [ ], propagatedBuildInputs ? [ ]
-, entrypoint ? "", mainFile ? ""
-, ... }@args:
+{ pname
+, version
+, src
+, nativeBuildInputs ? [ ]
+, propagatedBuildInputs ? [ ]
+, entrypoint ? ""
+, mainFile ? ""
+, ...
+}@args:
 
 let
   drvInputs = drv:
@@ -12,11 +17,16 @@ let
     if input != null && builtins.isAttrs input then
       [ input (builtins.map recursive (drvInputs input)) ]
     else [ ];
-  allPropagatedBuildInputs = lib.lists.unique (lib.lists.flatten (builtins.map recursive propagatedBuildInputs));
+  allPropagatedBuildInputs = p: lib.lists.unique (lib.lists.flatten (builtins.map recursive p));
+  toLibraries = p:
+    lib.optionalString (propagatedBuildInputs != [ ])
+      (lib.concatMapStrings
+        builtins.toString
+        (lib.intersperse "," (allPropagatedBuildInputs p)));
   libraries =
-    if propagatedBuildInputs != [ ] then
-      "--library ${lib.concatMapStrings builtins.toString (lib.intersperse "," allPropagatedBuildInputs)}"
-    else "";
+    toLibraries propagatedBuildInputs;
+  library_flag =
+    lib.optionalString (libraries != "") "--library ${libraries}";
 in
 
 stdenv.mkDerivation (rec {
@@ -25,8 +35,10 @@ stdenv.mkDerivation (rec {
   dontAddStaticConfigureFlags = true;
   configurePlatforms = [ ];
 
-  LIGO = "${ligo}/bin/ligo ${libraries}";
+  LIGO = "${ligo}/bin/ligo";
   CI = "true";
+
+  passthru.libraries = toLibraries;
 
   buildPhase =
     if entrypoint == "" then
@@ -44,6 +56,7 @@ stdenv.mkDerivation (rec {
         mkdir -p ./compiled
 
         ${LIGO} compile contract \
+          ${library_flag} \
           --project-root . \
           ${if mainFile != "" then mainFile else (lib.importJSON "${src}/package.json").main} \
           -o ./compiled/${entrypoint}.tz
