@@ -3,17 +3,19 @@
 rec {
   ligo-fa = buildLigoPackage {
     pname = "@ligo/fa";
-    version = "1.0.1";
+    version = "1.0.4";
 
     src = fetchFromGitHub {
       owner = "ligolang";
       repo = "contract-catalogue";
-      rev = "fef37aac15f6dadbe7ec050f0fc14d351b63178c";
-      sha256 = "sha256-uBJ/IQX25HPbVQPyDUiBSFtINK2F4Zf62+ovu5+mMmM=";
+      rev = "5f51c94f78fa7ee53ae25b5c17ef0850f42b8156";
+      sha256 = "sha256-+Txn4LRTjh1QwDoHr8majEUh9R4JSvAoE1ramx984JI=";
     };
 
     mainFile = "lib/fa2/nft/NFT.mligo";
     entrypoint = "NFT_mligo";
+
+    doCheck = true;
   };
 
   ligo-bigarray = buildLigoPackage rec {
@@ -26,6 +28,8 @@ rec {
       rev = "${version}";
       sha256 = "sha256-8WeJiAtv5owLwkFC8OgLtQfYwI9qxzWTeObb3EGs+fU=";
     };
+
+    doCheck = true;
   };
 
   ligo-math-lib = buildLigoPackage rec {
@@ -38,6 +42,8 @@ rec {
       rev = "${version}";
       sha256 = "sha256-/Ohmkj597l3HEXaOmqh+ryy88vT6z9lHU734kiBcADk=";
     };
+
+    doCheck = true;
   };
 
   ligo-permit = buildLigoPackage rec {
