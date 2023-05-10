@@ -3,13 +3,13 @@
 rec {
   ligo-fa = buildLigoPackage {
     pname = "@ligo/fa";
-    version = "1.0.5";
+    version = "1.0.1";
 
     src = fetchFromGitHub {
       owner = "ligolang";
       repo = "contract-catalogue";
-      rev = "e715e9614e61e538dfb68c7ead0a3e4eaeda2434";
-      sha256 = "sha256-SN8kjoH0iMRs65H7KN+Dg+FPnxrvn0BJn+S+QYKEhqU=";
+      rev = "fef37aac15f6dadbe7ec050f0fc14d351b63178c";
+      sha256 = "sha256-uBJ/IQX25HPbVQPyDUiBSFtINK2F4Zf62+ovu5+mMmM=";
     };
 
     mainFile = "lib/fa2/nft/NFT.mligo";

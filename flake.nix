@@ -14,7 +14,9 @@
           let
             pkgs = nixpkgs.legacyPackages.${system}.extend (import ./nix/overlays.nix);
           in
-          pkgs.ligoPackages
+          {
+            inherit (pkgs) ligoPackages;
+          }
         );
       overlays.default = import ./nix/overlays.nix;
     };
