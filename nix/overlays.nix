@@ -5,8 +5,8 @@ final: prev: {
     src = prev.fetchFromGitLab {
       owner = "ligolang";
       repo = "ligo";
-      rev = "e1ba699deb4622f59241dc057abbe0ff0bacc24d";
-      sha256 = "sha256-2ralD+bXjKNmKeka7cMjIvkTybOf232vjDLp3UQ+jwE=";
+      rev = "6a123b0238925d6839f3d97197c8c0b3d9dc3362";
+      sha256 = "sha256-vBvgagXK9lOXRI+iBwkPKmUvncZjrqHpKI3UAqOzHvc=";
       fetchSubmodules = true;
     };
 
